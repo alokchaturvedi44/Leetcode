@@ -1,4 +1,3 @@
-package DP;
 /*
  * @lc app=leetcode id=198 lang=java
  *
@@ -56,8 +55,52 @@ package DP;
 
 // @lc code=start
 class Solution {
+
+    private int solve1(int nums[], int dp[][], int idx, int canRob){
+        if(idx == nums.length) return 0;
+
+        if(dp[idx][canRob] != -1){
+            return dp[idx][canRob];
+        }
+        if(canRob == 0){
+            return dp[idx][canRob] = solve1(nums, dp, idx+1, 1);
+        }
+
+        int take = nums[idx] + solve1(nums, dp, idx+1, 0);
+        int leave = solve1(nums, dp, idx+1, 1);
+
+        return dp[idx][canRob] = Math.max(take, leave);
+    }
+
+    private int solve2(int nums[]){
+        int n = nums.length;
+        int dp[] = new int[n+1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+        for(int i=2; i<n+1; i++){
+            int take = nums[i-1] + dp[i-2];
+            int leave = dp[i-1];
+            
+            dp[i] = Math.max(take, leave);
+        }
+
+        return dp[n];
+    }
+
     public int rob(int[] nums) {
-        
+        int n = nums.length;
+
+        // approach - 1
+
+        int dp[][] = new int[n+1][2];
+        for(int i=0; i<n+1; i++){
+            dp[i][0] = -1;
+            dp[i][1] = -1;
+        }
+        // return solve1(nums, dp, 0, 1);
+
+        // approach - 2
+        return solve2(nums);
     }
 }
 // @lc code=end
