@@ -75,9 +75,9 @@ class Solution {
     }
 
     public int fib(int n) {
-        // if (n <= 1) {
-        //     return n;
-        // }
+        if (n <= 1) {
+            return n;
+        }
 
         // int dp[] = new int[n + 1];
         // dp[0] = 0;
@@ -87,10 +87,25 @@ class Solution {
         // }
         // return dp[n];
 
+
+        // space optimized approach
+        int prev_prev = 0;
+        int prev = 1;
+        for(int i=2; i<n+1; i++){
+            int ans = prev + prev_prev;
+            prev_prev = prev;
+            prev = ans;
+        }
+        // return prev;
+
         // recursive dp approach
         int dp[] = new int[n+1];
         Arrays.fill(dp, -1);
         return solve(n, dp);
+
+
+
+        
     }
 }
 // @lc code=end
